@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}About{% endblock title %}
+
+{% block aboutactive %}active{% endblock aboutactive %}
+
+
+{% block body %}
+
+
+   <div class="container" style="font-family: 'Roboto Slab', serif; font-size: 18px; line-height: 50px; letter-spacing: 1px;">
+    <br>
+       <h1 class='text-center my-5'><u><i>Welcome to My Todos app.</i></u></h1>
+   
+       <h5>This is the Very Simple and Easy to use Todo app.</h5>
+       <p>It's very simple and easy to add your Daily Todos and Todo's Description here. </p>
+       <p>Below are the some Simple features of this Simple Todo app:</p>
+
+       <ul>
+           <li>You can Add your daily TODOS and Todo's Description here.</li>
+           <li>When you will add any Todo and Todo's Description it will automatically add the current Date and time of that moment.</li>
+           <li>And according to your convenience you can Update any Todo's Title and Description.</li>
+           <li>The interesting thing in this app is, when you will Update any Todo's Title and Description it will automatically Update the current Date and Time of that Particular Todo.</li>
+           <li>You can search your Todos in the Search bar. You can search it by Todo's Title or by Todo's Description or even by Todo's Date and Time.</li>
+           <li>And if you want to Delete any Todo, you can do that as well.</li>
+           <li>The only thing you have to do is to <a data-bs-toggle="modal" href="#signupmodal" role="button">create your account</a> and <a data-bs-toggle="modal" href="#loginmodal" role="button">Login</a>. And you are ready to go!</li>
+           <li>If you have any suggestions or any query, Please feel free to <a href="/contact">Contact us</a>.</li>
+           
+
+       </ul>
+   </div>
+
+
+{% endblock body %}

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+    {% load static %}
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+
+    <title>{% block title %}{% endblock title %}-My Todos</title>
+</head>
+
+<body>
+
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary" >
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">My Todos</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link {% block homeactive %}{% endblock homeactive %}" aria-current="page"
+                            href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% block aboutactive %}{% endblock aboutactive %}" href="/about">About-Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% block contactactive %}{% endblock contactactive %}"
+                            href="/contact">Contact-Us</a>
+                    </li>
+                </ul>
+                <form class="d-flex" action="/search" method="get">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                    name="todosearch" id="todosearch" required>
+                    <button class="btn btn-outline-warning" style="margin-right: 18px" type="submit">Search</button>
+                </form>
+                {% if user.is_authenticated %}
+                <span class="text-light">Welcome, {{request.user}}</span><a href="/logout" class="mx-3 text-light">Logout</a>
+                {% else %}
+                <!-- Button trigger login modal -->
+                <button type="button" class="btn btn-outline-info mx-3" data-bs-toggle="modal"
+                    data-bs-target="#loginmodal">
+                    Login
+                </button>
+                <!-- Button trigger sign-up modal -->
+                <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#signupmodal">
+                    Sign-Up
+                </button>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+
+    {% for message in messages %}
+
+    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+        <strong>{{message}} </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    {% endfor %}
+
+
+
+    <!-- Sign-up Modal -->
+    <div class="modal fade" id="signupmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signup">Sign-Up</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/signup" method="post">{% csrf_token %}
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control rounded-4" name="username" id="username"
+                                placeholder="name@example.com" required>
+                            <label for="username">Username (lowercase & alphanumeric)</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control rounded-4" name="fname" id="fname"
+                                placeholder="name@example.com" required>
+                            <label for="fname">First Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control rounded-4" name="lname" id="lname"
+                                placeholder="name@example.com" required>
+                            <label for="lname">Last Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control rounded-4" name="email" id="email"
+                                placeholder="name@example.com" required>
+                            <label for="email">Email Address</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control rounded-4" name="password1" id="password1"
+                                placeholder="Password" required>
+                            <label for="password1">Choose a Password</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control rounded-4" name="password2" id="password2"
+                                placeholder="Password" required>
+                            <label for="password2">Confirm Password</label>
+                        </div>
+                        <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Sign-Up</button>
+                        <p class="text-center">Already have an account?  <a data-bs-toggle="modal" href="#loginmodal" role="button">Login</a></p>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- login Modal -->
+    <div class="modal fade" id="loginmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="login">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/login" method="post">{% csrf_token %}
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control rounded-4" name="loginusername" id="loginusername"
+                                placeholder="name@example.com" required>
+                            <label for="loginusername">Username</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control rounded-4" name="loginpassword"
+                                id="loginpassword" placeholder="Password" required>
+                            <label for="password1">Password</label>
+                        </div>
+                        <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Login</button>
+                    </form>
+                    <p class="text-center">Don't have an account? <a data-bs-toggle="modal" href="#signupmodal" role="button">Join</a></p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    {% block body %}
+
+
+
+
+
+
+    {% endblock body %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+        </script>
+
+
+    <div class="container my-5">
+        <footer class="py-3 my-4">
+            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                <li class="nav-item"><a href="/" class="nav-link px-2 text-muted">Home</a></li>
+                <li class="nav-item"><a href="/about" class="nav-link px-2 text-muted">About-Us</a></li>
+                <li class="nav-item"><a href="/contact" class="nav-link px-2 text-muted">Contact-Us</a></li>
+            </ul>
+            <p class="text-center text-muted">© 2022 My Todos, Inc</p>
+        </footer>
+    </div>
+
+
+

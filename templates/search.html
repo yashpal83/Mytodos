@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block homeactive %}active{% endblock homeactive %}
+
+
+{% block body %}
+
+
+<div class="container">
+
+    {% if user.is_authenticated %}  
+
+    <h1 class="text-center my-5"><u><i>Search Results</i></u></h1>
+
+    {% if todos|length == 0 %}
+    
+
+    <div class="alert alert-info text-center my-5" role="alert">
+        Your search <u><b>{{word}}</b></u> did not match any todos.
+     </div>
+
+    {% else %}
+
+
+    <table class="table table-bordered border-primary border border-4 text-center">
+        <thead class="border border-4 border-primary">
+            <tr>
+                <th class="col-1" scope="col">Sr. No</th>
+                <th class="col-2" scope="col">Todo Title</th>
+                <th class="col-5" scope="col">Todo Description</th>
+                <th class="col-2" scope="col">Date / Time</th>
+                <th class="col-2" scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for todo in todos reversed %}
+
+            <tr>
+                <th scope="row">{{forloop.counter}}.</th>
+                <td>{{todo.title | title}}</td>
+                <td>{{todo.desc | title}}</td>
+                <td>{{todo.datetime}}</td>
+                <td>
+                    <a href="/update/{{todo.num}}"><button type="button"
+                            class="btn btn-sm btn-outline-info">Update</button></a>
+                    <a href="/delete/{{todo.num}}"><button type="button"
+                            class="btn btn-sm btn-outline-danger">Delete</button></a>
+                </td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endif %}
+
+{% else %}
+<div class="alert alert-info text-center my-5" role="alert">
+    Please <a data-bs-toggle="modal" href="#loginmodal" role="button">Login</a> to search your added Todos.
+  </div>
+
+
+{% endif %}
+
+
+{% endblock body %}
